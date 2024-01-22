@@ -21,6 +21,22 @@ app.post("/send-message", async (req, res) => {
   res.status(200).json(result)
 })
 
+// Start typing indicator
+app.post("/start-typing", async (req, res) => {
+  const chatId = req.body.chatId
+  const chat = await client.getChatById(chatId)
+  await chat.sendStateTyping()
+  res.status(200).json({ success: true })
+})
+
+// Stop typing indicator
+app.post("/stop-typing", async (req, res) => {
+  const chatId = req.body.chatId
+  const chat = await client.getChatById(chatId)
+  await chat.clearState()
+  res.status(200).json({ success: true })
+})
+
 const startServer = () => {
   // Start the server
   const port = 3000
